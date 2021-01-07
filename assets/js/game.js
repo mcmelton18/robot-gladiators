@@ -25,7 +25,7 @@ var startGame = function() {
       var pickedEnemyName = enemyNames[i];
 
       // reset enemyHealth before starting new fight
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40,60);
 
       // pass the pickedEnemyName variable's value into the fight function, where it will assume the value of the enemyName parameter
       fight(pickedEnemyName);
@@ -76,14 +76,17 @@ var fight = function(enemyName) {
       if (confirmSkip) {
         window.alert(playerName + ' has decided to skip this fight. Goodbye!');
         // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        playerMoney = (0, playerMoney - 10);
         shop();
         break;
       }
     }
 
-    // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = enemyHealth - playerAttack;
+    // generate random damage value based on player's attack power
+    var damage = randomNumber(playerAttack -3, playerAttack);
+
+    enemyHealth = Math.max(0, enemyHealth- damage);
+
     console.log(
       playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
     );
@@ -109,8 +112,11 @@ var fight = function(enemyName) {
       window.alert(enemyName + ' still has ' + enemyHealth + ' health left.');
     }
 
-    // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    // genreate random damage value based on player's attack power 
+    var damage = randomNumber(playerAttack- 3, playerAttack);
+
+    enemyHealth = Math.max(0, enemyHealth - damage);
+
     console.log(
       enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
     );
@@ -158,5 +164,11 @@ var shop = function() {
   }
 };
 
-// start first game when page loads
+//fucntion to generate a randome numberic value 
+var randomNumber = function(min,max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
+};
+
 startGame();
